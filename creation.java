@@ -1,10 +1,11 @@
 package application;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Circle;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 
 
 public class creation extends Application {
+	Label ajout = new Label("AJOUTER");
 	int i1=0;
 	int i2=0;
 	int i3=0;
@@ -25,6 +27,28 @@ public class creation extends Application {
 	int nbCarbonne =0 ;
 	int nbHydrogene =0 ;
 	int nbOxygene =0 ;
+	private void updateAtomCounts() {
+	    if(nbCarbonne == 1 && nbHydrogene == 4 && nbOxygene==0) {
+	    	ajout.setText("methane");
+	    }
+	    else {
+	    	if(nbCarbonne == 2 && nbHydrogene == 6 && nbOxygene==0) {
+	    		ajout.setText("ethane");
+	    	}else {
+	    		if(nbCarbonne == 3 && nbHydrogene == 8 && nbOxygene==0) {
+	    			ajout.setText("Propane");
+	    		}else {
+	    			if(nbCarbonne == 4 && nbHydrogene == 10 && nbOxygene==0) {
+	    				ajout.setText("Butane");
+	    			}else {
+	    				if(nbCarbonne == 1 && nbHydrogene == 4 && nbOxygene==1) {
+	    					ajout.setText("Methanol");
+	    				}else {ajout.setText("");}
+	    			}
+	    		}
+	    	}
+	    }
+	}
 	public Group Bole() {
 		Group element = new Group();
 		Box base1 = new Box(250,10, 0);
@@ -33,13 +57,9 @@ public class creation extends Application {
 		Line barreGauche1 = new Line(-150,0,-125,100);
          barreGauche1.setStroke(Color.BROWN);
 		barreGauche1.setStrokeWidth(4);
-		Line barreGauche2 = new Line(20,20,20,10);
-		Line barreGauche3 = new Line(20,20,20,10);
 		Line barreDroite1 = new Line(153,0,125,100);
 		barreDroite1.setStroke(Color.BROWN);
 		barreDroite1.setStrokeWidth(4);
-		Line barreDroite2 = new Line(20,20,20,10);
-		Line barreDroite3 = new Line(20,20,20,10);
 		Group bole = new Group(barreGauche1,base1,barreDroite1);
 		element.getChildren().addAll(bole);
 		return element ;
@@ -84,7 +104,8 @@ public class creation extends Application {
 		element.setOnMouseReleased(event ->{
 			if((event.getSceneX() >= 461.0)&&(event.getSceneX() <= 748.0)&&(event.getSceneY()>=125.0)&&(event.getSceneY()<=210.0)) {
 				nbOxygene++;
-			}else {nbHydrogene--;}
+			}else {nbOxygene--;}
+			updateAtomCounts();
 		});
 		return element ;
 	}
@@ -112,8 +133,9 @@ public class creation extends Application {
 			});
 			element.setOnMouseReleased(event ->{
 				if((event.getSceneX() >= 461.0)&&(event.getSceneX() <= 748.0)&&(event.getSceneY()>=125.0)&&(event.getSceneY()<=210.0)) {
-					nbHydrogene++;
-				}else {nbHydrogene--;}
+					nbHydrogene++;updateAtomCounts();
+				}else {nbHydrogene--;updateAtomCounts();}
+				updateAtomCounts();
 			});
 			
 		return element ;}
@@ -126,7 +148,7 @@ public class creation extends Application {
     Group bole1 = Bole();
 		root.setCenter(bole1);
 		 bole1.setTranslateX(170);
-	  		bole1.setTranslateY(-4);
+	  		bole1.setTranslateY(30);
 Group oxygene1 = Oxygene(20);
 	  		oxygene1.setTranslateX(905);
 	  		oxygene1.setTranslateY(420);
@@ -142,7 +164,7 @@ Group oxygene2 = Oxygene(20);
     Group bole2 = Bole();
           root.setLeft(bole2);
           bole2.setTranslateX(70);
-  		bole2.setTranslateY(240);
+  		bole2.setTranslateY(310);
   		root.setStyle("-fx-background-color: BLACK;"); 
 Group hydrogene1 = hydrogene(10);
 	hydrogene1.setTranslateX(125);
@@ -204,9 +226,9 @@ Group hydrogene10 = hydrogene(10);
 	
 	
 	Group bole3 = Bole();
-            root.setTop(bole3);
-            bole3.setTranslateX(460);
-    		bole3.setTranslateY(345);
+            root.getChildren().add(bole3);
+            bole3.setTranslateX(600);
+    		bole3.setTranslateY(350);
  Group carbone1 = Carbone(20);
     		carbone1.setTranslateX(505);
     		carbone1.setTranslateY(420);
@@ -215,7 +237,9 @@ Group hydrogene10 = hydrogene(10);
     			if(i1 % 2 !=0) {nbCarbonne++;carbone1.setTranslateY(carbone1.getTranslateY() -250);}else {
     				nbCarbonne--;
     				carbone1.setTranslateY(carbone1.getTranslateY() +250);
-    			}});
+    			}
+    			updateAtomCounts();
+    			});
     		root.getChildren().add(carbone1);
     		
  Group carbone2 = Carbone(20);
@@ -227,6 +251,7 @@ Group hydrogene10 = hydrogene(10);
     			if(i2 % 2 !=0) {nbCarbonne++;
     			carbone2.setTranslateY(carbone2.getTranslateY() -250);}
     			else {nbCarbonne--;carbone2.setTranslateY(carbone2.getTranslateY() +250);}
+    			updateAtomCounts();
     		});
 Group carbone3 = Carbone(20);
      		carbone3.setTranslateX(585);
@@ -237,6 +262,7 @@ Group carbone3 = Carbone(20);
     			if(i3 % 2 !=0) {nbCarbonne++;
     			carbone3.setTranslateY(carbone3.getTranslateY() -250);}
     			else {nbCarbonne--;carbone3.setTranslateY(carbone3.getTranslateY() +250);}
+    			updateAtomCounts();
     		});
            
  Group carbone4 = Carbone(20);
@@ -248,8 +274,14 @@ Group carbone3 = Carbone(20);
     			if(i4 % 2 !=0) {nbCarbonne++;
     			carbone4.setTranslateY(carbone4.getTranslateY() -250);}
     			else{nbCarbonne--;carbone4.setTranslateY(carbone4.getTranslateY() +250);}
+    			updateAtomCounts();
     		});
-			
+			root.setTop(ajout);
+			ajout.setTranslateY(0);
+			ajout.setPadding(new Insets(0,0,0,400));
+			ajout.setTextFill(Color.RED);
+			ajout.setStyle("-fx-font-size: 25;");
+			updateAtomCounts();
 			
           
 }
